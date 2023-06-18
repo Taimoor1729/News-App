@@ -7,11 +7,21 @@ export default class News extends Component {
     this.state = {
       articale: [],
       page: 1,
+      totalResult: 0,
     };
+  }
+
+  handlePagination = () => {
+  const  {totalResult, articale} = this.state
+    const result = Math.ceil(totalResult/20)
+    this.state({
+      page: result
+    })
   }
 
   handlePrevious = () => {
     console.log("preoius butoon is clicked");
+    this.handlePagination()
     const { page, articale} = this.state;
     if (page > 1) {
       this.setState(
@@ -26,11 +36,13 @@ export default class News extends Component {
   };
   
   handleNext = () => {
+    this.handlePagination()
     console.log("next button is clicked");
     const { page, articale } = this.state;
     const hasData = articale && articale.length > 0
     console.log("hasData",hasData)
     if(hasData){
+
     this.setState(
       {
         page: page + 1
@@ -44,12 +56,17 @@ export default class News extends Component {
 
 
   fetchNews  () {
-    const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=72c2a7e215ee43c38e3672f783a1c87b&page=${this.state.page}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=72c2a7e215ee43c38e3672f783a1c87b&page=${this.state.page}&pageSize=20`;
      fetch(url)
     .then ( async response =>  await response.json())
-    .then (async data =>  { return await this.setState({
-        articale: data.articles
-    })})
+    .then (async data =>  
+      {
+        this.setState({
+          articale: data.articles,
+          totalResult: data.totalResults
+        })
+      }
+      ) 
     .catch(err => console.log(err))
   }
 
@@ -61,7 +78,7 @@ export default class News extends Component {
 
   render() {
     console.log(this.state.articale);
-    console.log(this.state.page);
+    console.log("this.state.totalResult", this.state.totalResult);
     return (
       <div className="container my-3">
         <div className="row md-3">
