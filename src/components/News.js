@@ -11,17 +11,17 @@ export default class News extends Component {
     };
   }
 
-  handlePagination = () => {
-  const  {totalResult, articale} = this.state
-    const result = Math.ceil(totalResult/20)
-    this.state({
-      page: result
-    })
-  }
+  // handlePagination = () => {
+  // const  {totalResult, articale} = this.state
+  //   const result = Math.ceil(totalResult/20)
+  //   this.state({
+  //     page: result
+  //   })
+  // }
 
   handlePrevious = () => {
     console.log("preoius butoon is clicked");
-    this.handlePagination()
+    // this.handlePagination()
     const { page, articale} = this.state;
     if (page > 1) {
       this.setState(
@@ -36,21 +36,26 @@ export default class News extends Component {
   };
   
   handleNext = () => {
-    this.handlePagination()
     console.log("next button is clicked");
-    const { page, articale } = this.state;
-    const hasData = articale && articale.length > 0
-    console.log("hasData",hasData)
-    if(hasData){
-
-    this.setState(
-      {
-        page: page + 1
-      },
-      () => {
-        this.fetchNews();
-      }
-    );}
+    const { page, articale, totalResult } = this.state;
+    const hasData = articale && articale.length > 0;
+    console.log("hasData", hasData);
+  
+    if (page + 1 > Math.ceil(totalResult / 20)) {
+      return null
+    }
+    
+    else{
+      this.setState(
+        {
+          page: page + 1
+        },
+        () => {
+          // this.handlePagination(); // Move handlePagination call inside setState callback
+          this.fetchNews();
+        }
+      );
+    }
   };
   
 
