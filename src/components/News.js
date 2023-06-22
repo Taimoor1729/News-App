@@ -113,6 +113,7 @@ export default class News extends Component {
         <div className="d-flex justify-content-between">
           <button
             type="button"
+            disabled= {this.state.page <= 1}
             className="btn btn-dark"
             onClick={this.handlePrevious}
           >
@@ -120,6 +121,7 @@ export default class News extends Component {
           </button>
           <button
             type="button"
+            disabled ={this.state.page + 1 > Math.ceil(this.state.totalResult / 20)}
             className="btn btn-dark"
             onClick={this.handleNext}
           >
