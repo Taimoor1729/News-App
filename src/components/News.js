@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
+import Spinner from "./spinner/Spinner";
 
 export default class News extends Component {
   constructor() {
@@ -8,6 +9,7 @@ export default class News extends Component {
       articale: [],
       page: 1,
       totalResult: 0,
+      loading: true
     };
   }
 
@@ -61,14 +63,19 @@ export default class News extends Component {
 
 
   fetchNews  () {
-    const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=72c2a7e215ee43c38e3672f783a1c87b&page=${this.state.page}&pageSize=20`;
+    this.setState({
+      loading: true
+     })
+    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=72c2a7e215ee43c38e3672f783a1c87b&page=${this.state.page}&pageSize=20`;
      fetch(url)
+     
     .then ( async response =>  await response.json())
     .then (async data =>  
       {
         this.setState({
           articale: data.articles,
-          totalResult: data.totalResults
+          totalResult: data.totalResults,
+          loading: false
         })
       }
       ) 
@@ -85,7 +92,12 @@ export default class News extends Component {
     console.log(this.state.articale);
     console.log("this.state.totalResult", this.state.totalResult);
     return (
-      <div className="container my-3">
+      <div className="text-center  my-3">
+      {this.state.loading ? <div class="text-center spinner-border" role="status">
+  {/* <span class="sr-only">Loading...</span> */}
+</div> :
+      <div className="container ">
+       
         <div className="row md-3">
           {this.state.articale?.map((item, index) => (
             <div className="col" key={index}>
@@ -128,6 +140,8 @@ export default class News extends Component {
             next &rarr;
           </button>
         </div>
+      </div>
+  }
       </div>
     );
   }
