@@ -7,10 +7,6 @@ export default class NewsItem extends Component {
         let {title, description, imageUrl, newsUrl} = this.props
         return (
           <>
-          <Spinner />
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
             <div className="card my-3 " style={{width : "18rem"}}>
               <img className="card-img-top" src={imageUrl} alt="Card cap" />
               <div className="card-body">
