@@ -3,14 +3,21 @@ import NewsItem from "./NewsItem";
 import Spinner from "./spinner/Spinner";
 
 export default class News extends Component {
-  constructor() {
-    super();
+
+
+capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+  constructor(props) {
+    super(props);
     this.state = {
       articale: [],
       page: 1,
       totalResult: 0,
       loading: true
     };
+    document.title = `${this.capitalizeFirstLetter(this.props.category)} - NewsMonkey`;
   }
 
   // handlePagination = () => {
@@ -24,7 +31,7 @@ export default class News extends Component {
   handlePrevious = () => {
     console.log("preoius butoon is clicked");
     // this.handlePagination()
-    const { page, articale} = this.state;
+    const { page } = this.state;
     if (page > 1) {
       this.setState(
         {
@@ -93,6 +100,7 @@ export default class News extends Component {
     console.log("this.state.totalResult", this.state.totalResult);
     return (
       <div className="text-center  my-3">
+        <h1 className="text-center" style={{margin: '35px 0px'}}>NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h1>
       {this.state.loading ? <div class="text-center spinner-border" role="status">
   {/* <span class="sr-only">Loading...</span> */}
 </div> :
@@ -120,6 +128,7 @@ export default class News extends Component {
                 newsUrl={item.url}
                 author={item.author}
                 date={item.publishedAt}
+                source={item.source}
               />
             </div>
           ))}
